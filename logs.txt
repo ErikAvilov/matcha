@@ -1,0 +1,7 @@
+I'm gonna log my mistates, assumptions or whatever whenever I feel like it
+
+- Error : The website didn't reload upon modifications on react's js
+- Solution : Wrong port, I had 80 exposed but react by default uses 3000
+
+I don't need nginx
+

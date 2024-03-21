@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: srcs/Front
+    init: true
+    container_name: react
+    restart: always
+    volumes:
+      - ./srcs/Front/my-app:/app
+    networks:
+      - my_network
+    ports:
+      - "3000:3000"
+
+  backend:
+    build: srcs/Back
+    init: true
+    container_name: fastapi
+    env_file:
+      - .env
+    restart: always
+    volumes:
+      - ./srcs/Back/app:/code/app
+    networks:
+      - my_network
+
+  database:
+    build: srcs/Database
+    init: true
+    container_name: db
+    env_file:
+      - .env
+    restart: always
+    networks:
+      - my_network
+    ports:
+      - "5432:5432"
+
+
+networks:
+  my_network:
+        driver: bridge
