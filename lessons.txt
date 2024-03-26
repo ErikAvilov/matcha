@@ -1,0 +1,16 @@
+You can use ternary conditions in react
+exemple:
+
+let bird = 0; <=== change this to impact which image will be displayed
+
+export default function App() {
+  return (
+    <div className="App">
+      <header className="App-header">
+		{bird == 0 ? (
+			<img src={pigeon} className="App-pigeon" alt="pigeon" />) :
+			(<img src={logo} className="App-logo" alt="logo" />)}
+      </header>
+    </div>
+  );
+}
