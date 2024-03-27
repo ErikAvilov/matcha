@@ -1,16 +1,17 @@
 import logo from './logo.svg';
-import pigeon from './pigeon.png'
+import pigeon from './pigeon.png';
 import './App.css';
+import './tictactoe.css';
 
-function MyButton() {
+export function MyButton() {
 	return (
-		<button>
+		<button className="square">
 			Click!
 		</button>
 	);
 }
 
-let bird = 1;
+let bird = 0;
 
 export default function App() {
   return (
@@ -30,6 +31,7 @@ export default function App() {
 		  >
           Learn React
         </a>
+		<MyButton />
       </header>
     </div>
   );

@@ -1,6 +1,5 @@
 .App {
  	text-align: center;
- 	overflow: auto;
 }
 
 .App-logo {
@@ -16,7 +15,7 @@
  	.App-logo {
 		animation: App-logo-spin infinite 20s linear;
 	}
-		.App-pigeon {
+	.App-pigeon {
 		animation: App-logo-spin infinite 5s linear;
 		width: 90px;
 		height: auto;
@@ -35,7 +34,7 @@
 }
 
 .App-link {
-	color: #9e7f6b;
+	color: #217ea8;
 }
 
 @keyframes App-logo-spin {
