@@ -25,17 +25,17 @@ services:
     networks:
       - my_network
 
-  database:
-    build: srcs/Database
-    init: true
-    container_name: db
-    env_file:
-      - .env
-    restart: always
-    networks:
-      - my_network
-    ports:
-      - "5432:5432"
+  # database:
+  #   build: srcs/Database
+  #   init: true
+  #   container_name: database
+  #   env_file:
+  #     - .env
+  #   restart: always
+  #   networks:
+  #     - my_network
+  #   ports:
+  #     - "5432:5432"
 
 
 networks:

@@ -1,0 +1,10 @@
+.pigeon-btn {
+	width: 100px;
+	text-decoration: none;
+	border: 1px solid #161313;
+	background: #f2f2f5;
+}
+
+.pigeon-btn:hover {
+	background-color: #e9e6e694;
+}
