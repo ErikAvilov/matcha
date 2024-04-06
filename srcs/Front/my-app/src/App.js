@@ -1,7 +1,9 @@
 import pigeon from './pigeon.png';
 import tinder from './tinder-logo.png';
 import { AppRouter } from './index.js';
+
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 
 import './css/App.css';
 import './css/tictactoe.css';
@@ -112,13 +114,21 @@ function Home() {
 
 const RegistrationForm = () => {
 	const [formData, setFormData] = useState({
-		username: 'Erik',
-		email: 'erik.avilov@yahoo.fr',
-		password: 'anasmaxkk5',
+		id: uuidv4(),
+		first_name: '',
+		last_name: '',
+		username: '',
+		email: '',
+		password: '',
+		gender: '',
+		orientation: '',
+		orientation_other: '',
+		birthdate: '',
 	});
 
 	const handleChange = (e) => {
-		setFormData({ ...formData, [e.target.name]: e.target.value });
+		const { name, value } = e.target;
+		setFormData({ ...formData, [name]: value });
 	};
 	
 	const handleSumbit = async (e) => {
@@ -126,7 +136,7 @@ const RegistrationForm = () => {
 
 		axios.post('http://localhost:8000/register', formData)
 			.then(response => {
-				console.log('success:', response.id);
+				console.log(response.data.message);
 			})
 			.catch(error => {
 				console.error('Error:', error);
@@ -139,6 +149,25 @@ const RegistrationForm = () => {
 					<input type='text' name='username' placeholder='Username' value={formData.username} onChange={handleChange} />
 					<input type='email' name='email' placeholder='Email' value={formData.email} onChange={handleChange} />
 					<input type='password' name='password' placeholder='Password' value={formData.password} onChange={handleChange} />
+					<input type='text' name='first_name' placeholder='First name' value={formData.first_name} onChange={handleChange} />
+					<input type='text' name='last_name' placeholder='Last name' value={formData.last_name} onChange={handleChange} />
+					<select name='gender' value={formData.gender} onChange={handleChange}>
+						<option value="" disabled>Select gender</option>
+						<option value="Male">Male</option>
+						<option value="Female">Female</option>
+						<option value="Non-binary">Non-binary</option>
+					</select>
+					<select name="orientation" value={formData.orientation} onChange={handleChange}>
+						<option value="" disabled>Select orientation</option>
+						<option value="Hetero">Heterosexual</option>
+						<option value="Homo">Homosexual</option>
+						<option value="Bi">Bi</option>
+						<option value="Other">Other (Please specify)</option>
+					</select>
+					{formData.orientation === 'Other' && (
+						<input type='text' name='orientation_other' placeholder='Other' value={formData.orientation_other} onChange={handleChange} onClick={(e) => e.stopPropagation()}/>
+					)}
+					<input type='date' name='birthdate' placeholder='Birthdate' value={formData.birthdate} onChange={handleChange} />
 					<button type="submit">Register</button>
 				</form>
 			</header>

@@ -1,39 +1,63 @@
 import asyncpg
-from asyncpg import Pool
-from pydantic import BaseModel, Field
+import asyncpg.pool
 from fastapi import FastAPI
 from uuid import UUID, uuid4
+from datetime import datetime
+import uuid
+import os
+
+POSTGRES_USER = os.getenv("POSTGRES_USER")
+POSTGRES_HOST = os.getenv("POSTGRES_HOST")
+POSTGRES_NAME = os.getenv("POSTGRES_NAME")
+POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD")
+POSTGRES_PORT = os.getenv("POSTGRES_PORT")
 
 app = FastAPI()
 
-DATABASE_URL = "postgresql://eavilov:1234@database/postgres"
+DATABASE_URL = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_NAME}"
 
-pool = None
+pool: asyncpg.pool.Pool = None
 
-async def get_pool() -> Pool:
+async def create_pool():
 	global pool
-	if pool is None:
-		pool = await asyncpg.create_pool(DATABASE_URL)
-	return pool
+	print('===================HELLO====================')
+	pool = await asyncpg.create_pool(DATABASE_URL)
 
-class User(BaseModel):
-	id: UUID = Field(default_factory=uuid4)
+async def close_pool():
+    await pool.close()
+
+class User:
+	id: uuid.UUID
+	first_name: str
+	last_name: str
 	username: str
 	email: str
 	password: str
+	gender: str
+	orientation: str
+	birthdate: datetime
 
-async def create_user(user: User) -> UUID:
-	async with await get_pool() as pool:
-		async with pool.acquire() as connection:
-			query = """
-				INSERT INTO users (id, username, email, pasword)
-				VALUES ($1, $2, $3, $4)
-			"""
-		await connection.execute(query, user.id, user.username, user.email, user.password)
-		return user.id
+async def create_user(data) -> UUID:
+	query = "INSERT INTO users (id, first_name, last_name, username, email, password, gender, orientation, birthdate) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id"
+	date_string = data.get('birthdate')
+	date_object = datetime.strptime(date_string, '%Y-%m-%d')
+	if data.get('orientation_other') is not None:
+		orientation = data.get('orientation_other')
+	else:
+		orientation = data.get('orientation')
+	values = (str(data.get('id')), data.get('first_name'), data.get('last_name'), data.get('username'), data.get('email'), data.get('password'), data.get('gender'), orientation, date_object)
+	async with pool.acquire() as conn:
+		user_id = await conn.fetchval(query, *values)
+		return user_id
+
+async def connect_to_db():
+	return await asyncpg.connect(DATABASE_URL)
+
+async def disconnect_from_db(conn):
+	await conn.close()
 
 async def get_user(user_id: int) -> User:
-	async with get_pool() as connection:
+	async with create_pool() as connection:
 		query = "SELECT id, username, email FROM users WHERE id = $1"
 		row = await connection.fetchrow(query, user_id)
 		return User(**row)
