@@ -1,6 +1,8 @@
 import pigeon from './pigeon.png';
 import tinder from './tinder-logo.png';
 import { AppRouter } from './index.js';
+import axios from 'axios';
+
 import './css/App.css';
 import './css/tictactoe.css';
 import './css/navbar.css';
@@ -9,19 +11,16 @@ import './css/buttons.css';
 import { useState, Component } from 'react';
 import { BrowserRouter as Router, Routes, Route, BrowserRouter, Link } from 'react-router-dom';
 
-export function MyButton(props) {
-	return (
-		<button className="pigeon-btn">
-			{ props.text }
-		</button>
-	);
-}
 
-export function NavBar() {
+function NavBar() {
 	return (
 			<nav className='navbar'>
-				<Link to="/" className='pigeon-btn'>Home</Link>
-				<Link to="/pigeon" className='pigeon-btn'>Pigeon</Link>
+				<a>Matcha</a>
+				<ul>
+					<li><Link to="/" className='nav-btn'>Home</Link></li>
+					<li><Link to="/pigeon" className='nav-btn'>Pigeon</Link></li>
+					<li><Link to="/register" className='nav-btn'>Register</Link></li>
+				</ul>
 			</nav>
 	);
 }
@@ -111,6 +110,42 @@ function Home() {
 	);
 }
 
+const RegistrationForm = () => {
+	const [formData, setFormData] = useState({
+		username: 'Erik',
+		email: 'erik.avilov@yahoo.fr',
+		password: 'anasmaxkk5',
+	});
+
+	const handleChange = (e) => {
+		setFormData({ ...formData, [e.target.name]: e.target.value });
+	};
+	
+	const handleSumbit = async (e) => {
+		e.preventDefault();
+
+		axios.post('http://localhost:8000/register', formData)
+			.then(response => {
+				console.log('success:', response.id);
+			})
+			.catch(error => {
+				console.error('Error:', error);
+			});
+		}
+	return (
+		<div className='App'>
+			<header className="App-header">
+				<form onSubmit={handleSumbit}>
+					<input type='text' name='username' placeholder='Username' value={formData.username} onChange={handleChange} />
+					<input type='email' name='email' placeholder='Email' value={formData.email} onChange={handleChange} />
+					<input type='password' name='password' placeholder='Password' value={formData.password} onChange={handleChange} />
+					<button type="submit">Register</button>
+				</form>
+			</header>
+		</div>
+	);
+};
+
 export class App extends Component {
 	render() {
 		return (
@@ -121,6 +156,7 @@ export class App extends Component {
 				<Route exact path="/" element={<Home />} />
 				<Route path="/pigeon" element={<MyPigeon />} />
 				<Route path="/game" element={<TicTacToe />} />
+				<Route path="/register" element={<RegistrationForm />} />
 			  </Routes>
 			</BrowserRouter>
 		</div>

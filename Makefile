@@ -30,7 +30,7 @@ front:
 	- @docker exec -it react /bin/sh
 
 db:
-	- @docker exec -it db psql -U eavilov -d postgres
+	- @docker exec -it database bash
 
 deletedb-data:
 	- @docker exec -it db psql -U eavilov -d postgres -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"

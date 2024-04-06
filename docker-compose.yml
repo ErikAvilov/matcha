@@ -7,7 +7,7 @@ services:
     container_name: react
     restart: always
     volumes:
-      - ./srcs/Front/my-app:/app
+      - ./srcs/Front/my-app/src:/app/src
     networks:
       - my_network
     ports:
@@ -24,18 +24,20 @@ services:
       - ./srcs/Back/app:/code/app
     networks:
       - my_network
+    ports:
+      - "8000:8000"
 
-  # database:
-  #   build: srcs/Database
-  #   init: true
-  #   container_name: database
-  #   env_file:
-  #     - .env
-  #   restart: always
-  #   networks:
-  #     - my_network
-  #   ports:
-  #     - "5432:5432"
+  database:
+    build: srcs/Database
+    init: true
+    container_name: database
+    env_file:
+      - .env
+    restart: always
+    networks:
+      - my_network
+    ports:
+      - "5432:5432"
 
 
 networks:

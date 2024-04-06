@@ -14,3 +14,8 @@ export default function App() {
     </div>
   );
 }
+
+In fastAPI we don't call them "views" but rather "endpoints"
+
+Ok about exported functions I've always been worried that using too much of them could impact performance.
+Apparently nope! It's still important to organize your code ofc but in terms of strain on memory, it doesn't harm much.
