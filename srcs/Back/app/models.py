@@ -24,7 +24,8 @@ async def create_pool():
 	pool = await asyncpg.create_pool(DATABASE_URL)
 
 async def close_pool():
-    await pool.close()
+	print('===================CLOSING====================')
+	await pool.close()
 
 class User:
 	id: uuid.UUID
@@ -38,17 +39,13 @@ class User:
 	birthdate: datetime
 
 async def create_user(data) -> UUID:
-	query = "INSERT INTO users (id, first_name, last_name, username, email, password, gender, orientation, birthdate) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id"
+	query = "INSERT INTO users (id, first_name, last_name, username, email, password, birthdate) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id"
 	date_string = data.get('birthdate')
 	date_object = datetime.strptime(date_string, '%Y-%m-%d')
-	if data.get('orientation_other') is not None:
-		orientation = data.get('orientation_other')
-	else:
-		orientation = data.get('orientation')
-	values = (str(data.get('id')), data.get('first_name'), data.get('last_name'), data.get('username'), data.get('email'), data.get('password'), data.get('gender'), orientation, date_object)
+	values = (str(data.get('id')), data.get('first_name'), data.get('last_name'), data.get('username'), data.get('email'), data.get('password'), date_object)
 	async with pool.acquire() as conn:
-		user_id = await conn.fetchval(query, *values)
-		return user_id
+		await conn.fetchval(query, *values)
+		return data.get('first_name')
 
 async def connect_to_db():
 	return await asyncpg.connect(DATABASE_URL)

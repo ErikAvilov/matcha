@@ -29,11 +29,12 @@ async def shutdown():
 @app.post("/register")
 async def register_user(request: Request):
 	json_data = await request.json()
-	if validator(json_data) is False:
-		return ({'ok': False, 'message': "Something's wrong with your form data"})
 	try:
-		user_id = await create_user(json_data)
+		validator(json_data)
 	except Exception as e:
-		print(e)
-		return ({'ok': False, 'message': 'Something broke, refresh the page or something'})
-	return ({'ok': True, 'id': user_id})
+		return ({'ok': False, 'message': f'Error during validation: {e}'})
+	try:
+		name = await create_user(json_data)
+	except Exception as e:
+		return ({'ok': False, 'message': f'Error: {e.detail}\nYou might need to refresh the page.'})
+	return ({'ok': True, 'message': f'account for {name} created!'})

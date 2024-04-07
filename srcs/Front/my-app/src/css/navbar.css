@@ -1,6 +1,5 @@
 .navbar {
-	background-color: rgba(187, 61, 61, 0.534);
-	/* padding: 24px; */
+	background-color: rgba(0, 0, 0, .5);
 	position: fixed;
 	width: 100%;
 	color: white;
@@ -14,7 +13,14 @@
 }
 
 .navbar ul {
-	margin: 1rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: flex;
+	align-items: stretch;
+}
+
+.navbar li {
 	list-style: none;
 	display: flex;
 }
@@ -28,18 +34,27 @@
 .nav-btn {
 	color: inherit;
 	text-decoration: none;
-	display: flex;
-	align-items: stretch;
-	height: 80%;
 	padding: .25rem;
-	margin: .25rem;
+	margin: 0.75rem;
+	letter-spacing: 1.5px;
 }
 
-.nav-btn:hover {
-	background-color: rgb(177, 109, 109);
+.navbar li:hover {
+	background-color: rgb(240, 233, 233);
+	color: black;
 }
 
-.nav-btn:active {
+.navbar li:active {
 	background-color: rgb(194, 181, 181);
 }
 
+.navbar span:hover {
+	display: flex;
+	background-color: rgb(240, 233, 233);
+	color: black;
+}
+
+.navbar span:active {
+	display: flex;
+	background-color: rgb(194, 181, 181);
+}
