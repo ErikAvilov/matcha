@@ -1,7 +1,7 @@
 import asyncpg
 import asyncpg.pool
 from fastapi import FastAPI
-from uuid import UUID, uuid4
+from uuid import UUID
 from datetime import datetime
 import uuid
 import os
@@ -27,17 +27,6 @@ async def close_pool():
 	print('===================CLOSING====================')
 	await pool.close()
 
-class User:
-	id: uuid.UUID
-	first_name: str
-	last_name: str
-	username: str
-	email: str
-	password: str
-	gender: str
-	orientation: str
-	birthdate: datetime
-
 async def create_user(data) -> UUID:
 	query = "INSERT INTO users (id, first_name, last_name, username, email, password, birthdate) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id"
 	date_string = data.get('birthdate')
@@ -52,12 +41,6 @@ async def connect_to_db():
 
 async def disconnect_from_db(conn):
 	await conn.close()
-
-async def get_user(user_id: int) -> User:
-	async with create_pool() as connection:
-		query = "SELECT id, username, email FROM users WHERE id = $1"
-		row = await connection.fetchrow(query, user_id)
-		return User(**row)
 
 async def read_user(user_id: int):
 	return await get_user(user_id)

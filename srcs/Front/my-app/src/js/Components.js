@@ -9,4 +9,4 @@ export const Field = ({ type, inputname, placeholder, value, style, onChange }) 
 		onChange={onChange}
 	  />
 	</div>
-  );
+);

@@ -1,0 +1,97 @@
+.reg-container {
+	min-height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: linear-gradient(217deg, rgba(255,0,0,.8), rgba(255,0,0,0) 70.71%),
+            linear-gradient(127deg, rgba(199, 66, 66, 0.8), rgba(0,255,0,0) 70.71%),
+            linear-gradient(336deg, rgba(223, 218, 218, 0.8), rgba(0,0,255,0) 70.71%);
+}
+
+.wrapper {
+	border: 1px bold black;
+	position: relative;
+	max-width: 430px;
+	width: 100%;
+	padding: 40px;
+	background: #ffffff;
+	border-radius: 6px;
+	box-shadow: 0 5px 10px rgba(0,0,0,0.25);
+}
+
+.wrapper h2 {
+	position: relative;
+	font-size: 28px;
+	font-weight: 600;
+	color: #333;
+}
+
+.wrapper h2::before {
+	content: '';
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	height: 3px;
+	width: 32px;
+	border-radius: 12px;
+	background: red;
+}
+
+.wrapper form {
+	margin-top: 25px;
+	
+}
+
+.wrapper form .input-box {
+	height: 52px;
+	margin: 18px 0;
+	
+}
+
+form .input-box input {
+	height: 100%;
+	width: 100%;
+	text-indent: 15px;
+	outline: none;
+	border: 1.5px solid #c7bebe;
+	border-bottom-width: 2.5px;
+	border-radius: 6px;
+	font-size: large;
+	font-weight: 600;
+	transition: all 0.4s ease;
+}
+
+.input-box input:focus,
+.input-box input:valid {
+	border-color: red;
+}
+
+.button-container {
+	display: flex;
+	justify-content: center;
+	margin: 12px;
+}
+
+.button-container button {
+	font-size: large;
+	min-height: 50px;
+	width: 200px;
+	border-radius: 8px;
+	background-color: white;
+	transition: all 0.4s ease;
+	font-style: oblique;
+}
+
+.button-container button:hover {
+	background-color: black;
+	color: white;
+}
+
+.button-container button:active {
+	background-color: white;
+	color: black;
+}
+
+.reg-text {
+	text-align: center;
+}

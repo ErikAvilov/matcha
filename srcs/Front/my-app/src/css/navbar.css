@@ -3,10 +3,13 @@
 	position: fixed;
 	width: 100%;
 	color: white;
+
 	align-items: center;
-	padding: 0 1rem;
+
+	padding: 0 1rem;;
+
 	display: flex;
-	justify-content: space-between;
+	justify-content: space-around;
 }
 
 .navbar ul {
@@ -14,8 +17,7 @@
 	padding: 0;
 	list-style: none;
 	display: flex;
-	flex-direction: column;
-	align-items: center;
+	align-items: stretch;
 }
 
 .navbar li {
@@ -24,7 +26,7 @@
 }
 
 .navbar a {
-	font-size: 18px;
+	font-size: 30px;
 	font-style: italic;
 	font-family: "Brush Script MT", serif;
 }
@@ -33,18 +35,27 @@
 	color: inherit;
 	text-decoration: none;
 	padding: .25rem;
-	margin: 0.5rem;
+	margin: 0.75rem;
 	letter-spacing: 1.5px;
 }
 
-.navbar li:hover,
-.navbar span:hover {
+.navbar li:hover {
 	background-color: rgb(240, 233, 233);
 	color: black;
 }
 
-.navbar li:active,
+.navbar li:active {
+	background-color: rgb(194, 181, 181);
+}
+
+.navbar span:hover {
+	display: flex;
+	background-color: rgb(240, 233, 233);
+	color: black;
+}
+
 .navbar span:active {
+	display: flex;
 	background-color: rgb(194, 181, 181);
 }
 

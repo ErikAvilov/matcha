@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from .models import User, create_user, create_pool, close_pool
+from .models import create_user, create_pool, close_pool
 from .validators.register_valid import validator
 
 app = FastAPI()

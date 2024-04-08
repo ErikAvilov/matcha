@@ -36,42 +36,6 @@
 	color: white;
 }
 
-.input-box {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	width: 100%;
-}
-
-.Register-page form .details {
-	display: flex;
-	flex-wrap: wrap;
-}
-
-.Register-page {
-	background: linear-gradient(0, #913e99de, #913e1d);
-	min-height: 100vh;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	color: black;
-	
-}
-
-.Register-page span {
-	font-size: 25px;
-	font-weight: 500;
-}
-
-.Register-page a {
-	font-size: 25px;
-	font-weight: 500;
-	display: flex;
-	position: absolute;
-	text-align: center;
-	justify-content: center;
-}
-
 .App-link {
 	color: #217ea8;
 }

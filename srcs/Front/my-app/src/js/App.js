@@ -1,17 +1,19 @@
-import pigeon from './pigeon.png';
-import tinder from './tinder-logo.png';
+import pigeon from '../pigeon.png';
+import tinder from '../tinder-logo.png';
+
+
+
+import '../css/App.css';
+import '../css/navbar.css';
+import '../css/buttons.css';
+import '../css/auth.css';
 
 import { useState, Component } from 'react';
-
-
-import './css/App.css';
-import './css/navbar.css';
-import './css/buttons.css';
-
-import { BrowserRouter as Routes, Route, BrowserRouter, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, BrowserRouter, Link } from 'react-router-dom';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
+import { Field } from './Components'
 
 const NavBar = () => {
 	return (
@@ -26,7 +28,7 @@ const NavBar = () => {
 	);
 };
 
-export const MyPigeon = () => {
+const MyPigeon = () => {
 	return (
 		<div className='App'>
 			<header className="App-header">
@@ -47,6 +49,45 @@ const Home = () => {
 		</div>
 	);
 }
+
+const LoginForm = () => {
+	const [formData, setFormData] = useState({
+		id: uuidv4(),
+		username: '',
+		password: '',
+	});
+
+	const handleChange = (e) => {
+		const { name, value } = e.target;
+		setFormData({ ...formData, [name]: value });
+	};
+	
+	const handleSumbit = async (e) => {
+		e.preventDefault();
+
+		axios.post('http://localhost:8000/login', formData)
+			.then(response => {
+				console.log(response.data.message);
+			})
+			.catch(error => {
+				console.error('Error:', error);
+			});
+	};
+	return (
+		<div className='reg-container'>
+			  <div className='wrapper'><h2>Login</h2>
+				<form onSubmit={handleSumbit}>
+				<Field type='text' inputname='username' placeholder='Username' value={formData.username} onChange={handleChange} style='input-box'/>
+				<Field type='password' inputname='password' placeholder='Password' value={formData.password} onChange={handleChange} style='input-box'/>
+				  <div className='button-container'>
+					<button type="submit">Login</button>
+				  </div>
+				</form>
+				<div className="reg-text">Don't have an account? <Link to="/register">Register</Link></div>
+			  </div>
+		</div>
+	);
+};
 
 const RegistrationForm = () => {
 	const [formData, setFormData] = useState({
@@ -77,31 +118,18 @@ const RegistrationForm = () => {
 			.catch(error => {
 				console.error('Error:', error);
 			});
-		}
+	};
 		return (
-			<div className='Register-body'>
-			  <div className='wrapper'>
-				<h2>Registration</h2>
+			<div className='reg-container'>
+			  <div className='wrapper'><h2>Registration</h2>
 				<form onSubmit={handleSumbit}>
-				  <div className='input-box'>
-					<input type='text' name='first_name' placeholder='First name' required value={formData.first_name} onChange={handleChange} />
-				  </div>
-				  <div className='input-box'>
-					<input type='text' name='last_name' placeholder='Last name' required value={formData.last_name} onChange={handleChange} />
-				  </div>
-				  <div className='input-box'>
-					<input type='email' name='email' placeholder='Email' required value={formData.email} onChange={handleChange} />
-				  </div>
-				  <div className='input-box'>
-					<input type='text' name='username' placeholder='Username' required value={formData.username} onChange={handleChange} />
-				  </div>
-				  <div className='input-box'>
-					<input type='password' name='password' placeholder='Password' required value={formData.password} onChange={handleChange} />
-				  </div>
-				  <div className='input-box'>
-					<input type='password' name='confirm_password' placeholder='Confirm password' required value={formData.confirm_password} onChange={handleChange} />
-				  </div>
-				  <div className='input-box'>
+				<Field type='text' inputname='first_name' placeholder='First name' value={formData.first_name} onChange={handleChange} style='input-box'/>
+				<Field type='text' inputname='last_name' placeholder='Last name' value={formData.last_name} onChange={handleChange} style='input-box'/>
+				<Field type='email' inputname='email' placeholder='Email' value={formData.email} onChange={handleChange} style='input-box'/>
+				<Field type='text' inputname='username' placeholder='Username' value={formData.username} onChange={handleChange} style='input-box'/>
+				<Field type='password' inputname='password' placeholder='Password' value={formData.password} onChange={handleChange} style='input-box'/>
+				<Field type='password' inputname='confirm_password' placeholder='Confirm password' value={formData.confirm_password} onChange={handleChange} style='input-box'/>
+				<div className='input-box'>
 					<input type='date' name='birthdate' placeholder='Birthdate' required value={formData.birthdate} onChange={handleChange} />
 				  </div>
 				  <div className='button-container'>
@@ -172,6 +200,7 @@ export class App extends Component {
 					<Route exact path="/" element={<Home />} />
 					<Route path="/pigeon" element={<MyPigeon />} />
 					<Route path="/register" element={<RegistrationForm />} />
+					<Route path="/login" element={<LoginForm />} />
 				  </Routes>
 			</BrowserRouter>
 		);
