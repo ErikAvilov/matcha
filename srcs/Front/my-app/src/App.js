@@ -1,7 +1,6 @@
 import pigeon from './pigeon.png';
 import tinder from './tinder-logo.png';
 
-import { AppRouter } from './index.js';
 import { useState, Component } from 'react';
 
 
@@ -9,21 +8,21 @@ import './css/App.css';
 import './css/navbar.css';
 import './css/buttons.css';
 
-import { BrowserRouter as Router, Routes, Route, BrowserRouter, Link } from 'react-router-dom';
+import { BrowserRouter as Routes, Route, BrowserRouter, Link } from 'react-router-dom';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
-import { useForm } from "react-cool-form";
 
 
 const NavBar = () => {
 	return (
-			<nav className='navbar'>
-				<span><Link to="/" className='nav-btn'>Matcha</Link></span>
-				<ul>
-					<li><Link to="/pigeon" className='nav-btn'>Pigeon</Link></li>
-					<li><Link to="/register" className='nav-btn'>Register</Link></li>
-				</ul>
-			</nav>
+		<nav className='navbar'>
+			<span><Link to="/" className='nav-btn'>Matcha</Link></span>
+			<ul>
+				<li><Link to="/pigeon" className='nav-btn'>Pigeon</Link></li>
+				<li><Link to="/register" className='nav-btn'>Register</Link></li>
+				<li><Link to="/login" className='nav-btn'>Login</Link></li>
+			</ul>
+		</nav>
 	);
 };
 
@@ -57,6 +56,7 @@ const RegistrationForm = () => {
 		username: '',
 		email: '',
 		password: '',
+		confirm_password: '',
 		birthdate: '',
 	});
 
@@ -68,6 +68,8 @@ const RegistrationForm = () => {
 	const handleSumbit = async (e) => {
 		e.preventDefault();
 
+		if (formData.password !== formData.confirm_password)
+			return alert('Passwords do not match');
 		axios.post('http://localhost:8000/register', formData)
 			.then(response => {
 				console.log(response.data.message);
@@ -76,28 +78,40 @@ const RegistrationForm = () => {
 				console.error('Error:', error);
 			});
 		}
-	return (
-		<header className="Register-page">
-			<form onSubmit={handleSumbit}>
-				<a>Registration</a>
-				<div className='input-box'>
-					<span className='details'>First Name</span>
-						<input type='text' name='first_name' placeholder='First name' value={formData.first_name} onChange={handleChange} />
-					<span className='details'>Last Nane</span>
-						<input type='text' name='last_name' placeholder='Last name' value={formData.last_name} onChange={handleChange} />
-					<span className='details'>Email</span>
-						<input type='email' name='email' placeholder='Email' value={formData.email} onChange={handleChange} />
-					<span className='details'>Username</span>
-						<input type='text' name='username' placeholder='Username' value={formData.username} onChange={handleChange} />
-					<span className='details'>Password</span>
-						<input type='password' name='password' placeholder='Password' value={formData.password} onChange={handleChange} />
-					<span className='details'>Date of Birth</span>
-						<input type='date' name='birthdate' placeholder='Birthdate' value={formData.birthdate} onChange={handleChange} />
+		return (
+			<div className='Register-body'>
+			  <div className='wrapper'>
+				<h2>Registration</h2>
+				<form onSubmit={handleSumbit}>
+				  <div className='input-box'>
+					<input type='text' name='first_name' placeholder='First name' required value={formData.first_name} onChange={handleChange} />
+				  </div>
+				  <div className='input-box'>
+					<input type='text' name='last_name' placeholder='Last name' required value={formData.last_name} onChange={handleChange} />
+				  </div>
+				  <div className='input-box'>
+					<input type='email' name='email' placeholder='Email' required value={formData.email} onChange={handleChange} />
+				  </div>
+				  <div className='input-box'>
+					<input type='text' name='username' placeholder='Username' required value={formData.username} onChange={handleChange} />
+				  </div>
+				  <div className='input-box'>
+					<input type='password' name='password' placeholder='Password' required value={formData.password} onChange={handleChange} />
+				  </div>
+				  <div className='input-box'>
+					<input type='password' name='confirm_password' placeholder='Confirm password' required value={formData.confirm_password} onChange={handleChange} />
+				  </div>
+				  <div className='input-box'>
+					<input type='date' name='birthdate' placeholder='Birthdate' required value={formData.birthdate} onChange={handleChange} />
+				  </div>
+				  <div className='button-container'>
 					<button type="submit">Register</button>
-				</div>
-			</form>
-		</header>
-	);
+				  </div>
+				  <div className="reg-text">Already have an account? <Link to="/login">Login</Link></div>
+				</form>
+			  </div>
+			</div>
+		  );
 };
 
 const ProfileSettings = () => {

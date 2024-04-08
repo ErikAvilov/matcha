@@ -18,11 +18,6 @@ re: clean all
 
 # -- quick commands -- #
 
-migrate:
-	- @rm srcs/images/Python/Project/*/migrations/*initial.py
-	- @docker exec -it django python manage.py makemigrations
-	- @docker exec -it django python manage.py migrate
-
 back:
 	- @docker exec -it fastapi bash
 
