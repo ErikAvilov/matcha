@@ -48,6 +48,9 @@ def validator(data): # Shouldn't be async or else it skips the function in the e
 	if len(data.get('email')) > 100 or len(data.get('username')) > 50 or len(data.get('password')) > 100 \
 		or len(data.get('first_name')) > 50 or len(data.get('last_name')) > 50:
 		raise Exception("One of the parameters is too long")
+	for key, info in data.items(): # Checks if an item has a space or is empty
+		if ' ' in info or not info: # There is a much proper way of coding it but I needed the "key" for debugging
+			raise Exception(f'{key} is empty')
 	if not password_validator(data.get('password')): # Validates the password format, spaces are forbidden and i don't care
 		raise Exception("wrong password format")
 	if not email_validator(data.get('email')):
@@ -55,13 +58,10 @@ def validator(data): # Shouldn't be async or else it skips the function in the e
 	if not all(name_validator(data.get(field, '')) for field in ['first_name', 'last_name']):
 		raise Exception("first or last name is invalid, or both idk")
 	if not username_validator(data.get('username')):
-		raise Exception('Username is invalid')
+		raise Exception('username is invalid')
 	user_age = calculate_age(data.get('birthdate'))
 	if user_age < 18 or user_age > 80: # Grooming preventer
-		raise Exception("She's underage or barely standing")
-	for key, info in data.items(): # Checks if an item has a space or is empty
-		if ' ' in info or not info: # There is a much proper way of coding it but I needed the "key" for debugging
-			raise Exception(f'{key} is empty')
+		raise Exception("she's underage or barely standing")
 	return True
 
 

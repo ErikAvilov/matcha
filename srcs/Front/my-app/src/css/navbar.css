@@ -15,13 +15,11 @@
 .navbar ul {
 	margin: 0;
 	padding: 0;
-	list-style: none;
 	display: flex;
 	align-items: stretch;
 }
 
 .navbar li {
-	list-style: none;
 	display: flex;
 }
 

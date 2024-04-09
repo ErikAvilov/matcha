@@ -1,7 +1,7 @@
 import pigeon from '../pigeon.png';
 import tinder from '../tinder-logo.png';
 
-
+import { LoginForm, RegistrationForm } from './Auth';
 
 import '../css/App.css';
 import '../css/navbar.css';
@@ -9,20 +9,59 @@ import '../css/buttons.css';
 import '../css/auth.css';
 
 import { useState, Component } from 'react';
-import { BrowserRouter as Router, Routes, Route, BrowserRouter, Link } from 'react-router-dom';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
+import { Routes, Route, BrowserRouter, Link } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 import { Field } from './Components'
+
+const RefreshToken = () => {
+	const refresh_token = Cookies.get('refresh_token')
+	axios.get('http://localhost:8000/refresh_token?token=' + refresh_token, {})
+	.then(response => {
+		console.log(response.data.token);
+		Cookies.set('access_token', response.data.token);
+	})
+	.catch(error => {console.error('Error:', error);});
+}
+
+const WhoAmI = () => {
+	const token = Cookies.get('access_token');
+	axios.get('http://localhost:8000/whoami?token=' + token, {})
+	.then(response => {
+		console.log(response.data.message);
+		if (response.data.code == 401)
+			{RefreshToken()}
+	})
+	.catch(error => {console.error('Error:', error);});
+};
+
+const Logout = () => {
+	const token = Cookies.get('access_token');
+	axios.post('http://localhost:8000/logout?token=' + token, {})
+	.then(response => {
+		if (response.data.ok) {
+			Cookies.remove('access_token');
+			Cookies.remove('refresh_token');
+		}
+		console.log(response.data.message);
+	})
+	.catch(error => {
+		console.error('Error:', error);
+	});
+}
 
 const NavBar = () => {
 	return (
 		<nav className='navbar'>
 			<span><Link to="/" className='nav-btn'>Matcha</Link></span>
 			<ul>
-				<li><Link to="/pigeon" className='nav-btn'>Pigeon</Link></li>
+				<li><Link to="/profile" className='nav-btn'>Profile</Link></li>
 				<li><Link to="/register" className='nav-btn'>Register</Link></li>
 				<li><Link to="/login" className='nav-btn'>Login</Link></li>
+				<li><button onClick={ WhoAmI }>WhoAmI</button></li>
+				<li><button onClick={ Logout }>Logout</button></li>
 			</ul>
 		</nav>
 	);
@@ -37,7 +76,7 @@ const MyPigeon = () => {
 			</header>
 		</div>
 	);
-}
+};
 
 const Home = () => {
 	return (
@@ -48,98 +87,14 @@ const Home = () => {
 		  </header>
 		</div>
 	);
-}
-
-const LoginForm = () => {
-	const [formData, setFormData] = useState({
-		id: uuidv4(),
-		username: '',
-		password: '',
-	});
-
-	const handleChange = (e) => {
-		const { name, value } = e.target;
-		setFormData({ ...formData, [name]: value });
-	};
-	
-	const handleSumbit = async (e) => {
-		e.preventDefault();
-
-		axios.post('http://localhost:8000/login', formData)
-			.then(response => {
-				console.log(response.data.message);
-			})
-			.catch(error => {
-				console.error('Error:', error);
-			});
-	};
-	return (
-		<div className='reg-container'>
-			  <div className='wrapper'><h2>Login</h2>
-				<form onSubmit={handleSumbit}>
-				<Field type='text' inputname='username' placeholder='Username' value={formData.username} onChange={handleChange} style='input-box'/>
-				<Field type='password' inputname='password' placeholder='Password' value={formData.password} onChange={handleChange} style='input-box'/>
-				  <div className='button-container'>
-					<button type="submit">Login</button>
-				  </div>
-				</form>
-				<div className="reg-text">Don't have an account? <Link to="/register">Register</Link></div>
-			  </div>
-		</div>
-	);
 };
 
-const RegistrationForm = () => {
-	const [formData, setFormData] = useState({
-		id: uuidv4(),
-		first_name: '',
-		last_name: '',
-		username: '',
-		email: '',
-		password: '',
-		confirm_password: '',
-		birthdate: '',
-	});
+const ProfilePage = () => {
+	return (
+		<div className='profile-page'>
 
-	const handleChange = (e) => {
-		const { name, value } = e.target;
-		setFormData({ ...formData, [name]: value });
-	};
-	
-	const handleSumbit = async (e) => {
-		e.preventDefault();
-
-		if (formData.password !== formData.confirm_password)
-			return alert('Passwords do not match');
-		axios.post('http://localhost:8000/register', formData)
-			.then(response => {
-				console.log(response.data.message);
-			})
-			.catch(error => {
-				console.error('Error:', error);
-			});
-	};
-		return (
-			<div className='reg-container'>
-			  <div className='wrapper'><h2>Registration</h2>
-				<form onSubmit={handleSumbit}>
-				<Field type='text' inputname='first_name' placeholder='First name' value={formData.first_name} onChange={handleChange} style='input-box'/>
-				<Field type='text' inputname='last_name' placeholder='Last name' value={formData.last_name} onChange={handleChange} style='input-box'/>
-				<Field type='email' inputname='email' placeholder='Email' value={formData.email} onChange={handleChange} style='input-box'/>
-				<Field type='text' inputname='username' placeholder='Username' value={formData.username} onChange={handleChange} style='input-box'/>
-				<Field type='password' inputname='password' placeholder='Password' value={formData.password} onChange={handleChange} style='input-box'/>
-				<Field type='password' inputname='confirm_password' placeholder='Confirm password' value={formData.confirm_password} onChange={handleChange} style='input-box'/>
-				<div className='input-box'>
-					<input type='date' name='birthdate' placeholder='Birthdate' required value={formData.birthdate} onChange={handleChange} />
-				  </div>
-				  <div className='button-container'>
-					<button type="submit">Register</button>
-				  </div>
-				  <div className="reg-text">Already have an account? <Link to="/login">Login</Link></div>
-				</form>
-			  </div>
-			</div>
-		  );
+		</div>
+	);
 };
 
 const ProfileSettings = () => {
@@ -198,7 +153,7 @@ export class App extends Component {
 				<NavBar />
 				  <Routes>
 					<Route exact path="/" element={<Home />} />
-					<Route path="/pigeon" element={<MyPigeon />} />
+					<Route path="/profile" element={<ProfilePage />} />
 					<Route path="/register" element={<RegistrationForm />} />
 					<Route path="/login" element={<LoginForm />} />
 				  </Routes>

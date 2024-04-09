@@ -6,6 +6,10 @@ from datetime import datetime
 import uuid
 import os
 
+from fastapi.security import OAuth2PasswordBearer
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
 POSTGRES_USER = os.getenv("POSTGRES_USER")
 POSTGRES_HOST = os.getenv("POSTGRES_HOST")
 POSTGRES_NAME = os.getenv("POSTGRES_NAME")
@@ -27,7 +31,7 @@ async def close_pool():
 	print('===================CLOSING====================')
 	await pool.close()
 
-async def create_user(data) -> UUID:
+async def create_user(data) -> str:
 	query = "INSERT INTO users (id, first_name, last_name, username, email, password, birthdate) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id"
 	date_string = data.get('birthdate')
 	date_object = datetime.strptime(date_string, '%Y-%m-%d')
@@ -36,11 +40,20 @@ async def create_user(data) -> UUID:
 		await conn.fetchval(query, *values)
 		return data.get('first_name')
 
+async def log_user(values) -> UUID:
+	query = "SELECT id FROM users WHERE username=$1 AND password =$2"
+	async with pool.acquire() as conn:
+		user_id = await conn.fetchval(query, *values)
+		return user_id
+
+async def find_user(data, user_id):
+	query = f"SELECT {data} FROM users WHERE id=$1"
+	async with pool.acquire() as conn:
+		returned_data = await conn.fetchval(query, user_id)
+		return returned_data
+
 async def connect_to_db():
 	return await asyncpg.connect(DATABASE_URL)
 
 async def disconnect_from_db(conn):
 	await conn.close()
-
-async def read_user(user_id: int):
-	return await get_user(user_id)

@@ -25,3 +25,16 @@ Using any pydantic tools is forbidden by the subject, since pydantic helps with 
 Including BaseModel or other stuff that makes it easier to create users
 Instead you just make a class with a bunch of variables in it and voila
 From tnard's github I noticed that they in fact import Json from pydantic but it must be an error cuz they're not using it in the file
+
+Now I should set some small objectives, so as of today, I'll start working more regularly to avoid a burn-out.
+If I can reach them, I can reward myself. ezpz
+
+April 9, 2024
+Finish User authentication by integrating JWT and designing a profile page for the front,
+tomorrow I should work on the profile settings where users can edit their bio,
+set their gender and orientation or edit their profile picture
+The main issue with the fastAPI docs, is that it doesn't take in account that matcha has stricts rules about input validaton or ORM's, for instance, I don't even have a class 'User', it's a manually managed with queries and my input validation is all python parsing instead of pydantic
+
+Alright, I had a bit of an oopsie today, I wanted to take a bit of time off and spent a good time at someone's place.
+I couldn't finish it all, I still need to polish some authentication stuff, but refresh/access tokens are ready,
+Users can authentify and all, tomorrow I'm 100% sure I'll finish it.

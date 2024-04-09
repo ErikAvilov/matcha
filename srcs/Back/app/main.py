@@ -1,7 +1,8 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .models import create_user, create_pool, close_pool
-from .validators.register_valid import validator
+from .models import create_pool, close_pool
+from .authentication.login import router as user_router
+from .authentication.registration import router as auth_router
 
 app = FastAPI()
 
@@ -26,15 +27,7 @@ async def startup_event():
 async def shutdown():
 	await close_pool()
 
-@app.post("/register")
-async def register_user(request: Request):
-	json_data = await request.json()
-	try:
-		validator(json_data)
-	except Exception as e:
-		return ({'ok': False, 'message': f'Error during validation: {e}'})
-	try:
-		name = await create_user(json_data)
-	except Exception as e:
-		return ({'ok': False, 'message': f'Error: {e.detail}\nYou might need to refresh the page.'})
-	return ({'ok': True, 'message': f'account for {name} created!'})
+
+app.include_router(user_router)
+app.include_router(auth_router)
+
