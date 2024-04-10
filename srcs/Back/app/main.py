@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from .models import create_pool, close_pool
 from .authentication.login import router as user_router
 from .authentication.registration import router as auth_router
+from .authentication.profile import router as profile_router
 
 app = FastAPI()
 
@@ -30,4 +31,5 @@ async def shutdown():
 
 app.include_router(user_router)
 app.include_router(auth_router)
+app.include_router(profile_router)
 

@@ -1,6 +1,8 @@
 import { useState } from "react";
 import '../css/Profile.css';
 import { Field, system_tags, Button } from "./Components";
+import Cookies from 'js-cookie';
+import axios from 'axios';
 
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
 
@@ -18,9 +20,7 @@ export const ProfileFill = () => {
 		gender: '',
 		orientation: '',
 		orientation_other: '',
-		bio: '',
 		pictures: [],
-		tags: [],
 	});
 
 	const handleChange = (e) => {
@@ -37,16 +37,26 @@ export const ProfileFill = () => {
 			if (image.size <= MAX_IMAGE_SIZE)
 				validImages.push(image);
 			else
-				console.error('Error: oversized file')
-			console.log(image)
+				console.error('Error: oversized file');
 		});
 		setFormData({...formData, pictures: validImages });
 	};
 
 	const handleSumbit = (e) => {
 		e.preventDefault();
-
-		console.log(formData);
+		const token = Cookies.get('access_token');
+		axios.post('http://localhost:8000/profile_save_one', {
+			formData,
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		})
+		.then(response => {
+			if (response.data.ok) {
+				console.log(response.data.message);
+			}
+		})
+		.catch(error => {console.error('Error:', error);});
 	};
 
 	return (
@@ -75,7 +85,6 @@ export const ProfileFill = () => {
 						<input type='file' accept="image/*" multiple onChange={handleFileChange}/>
 					</div>
 					<div className="image-preview">
-	                {/* Display selected images */}
 	                {formData.pictures.map((image, index) => (
 	                    <img
 	                        key={index}

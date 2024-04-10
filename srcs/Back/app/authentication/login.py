@@ -1,6 +1,5 @@
 from fastapi import Request, APIRouter, Depends
 from ..models import log_user, find_user, oauth2_scheme
-from typing import Annotated
 from datetime import datetime, timedelta, timezone
 from ..globals import *
 import jwt
@@ -18,7 +17,7 @@ def create_token(data: dict, algorithm, expired_delta: timedelta):
 	return encoded_jwt
 
 @router.get('/whoami')
-async def get_user(token: Annotated[str, Depends(oauth2_scheme)]):
+async def get_user(token: str = Depends(oauth2_scheme)):
 	try:
 		payload = jwt.decode(token, SECRET_KEY, algorithms=[ACCESS_ALGORITHM])
 		user_id = payload.get('sub')
@@ -51,7 +50,7 @@ async def login_user(request: Request):
 	return ({'ok': False, 'message': 'Error: Incorrect credentials'})
 
 @router.post('/logout')
-async def logout_user(token: Annotated[str, Depends(oauth2_scheme)]):
+async def logout_user(token: str = Depends(oauth2_scheme)):
 	try:
 		payload = jwt.decode(token, SECRET_KEY, algorithms=[ACCESS_ALGORITHM])
 	except Exception as e:
@@ -60,7 +59,7 @@ async def logout_user(token: Annotated[str, Depends(oauth2_scheme)]):
 	return {'ok': True, 'message': f"User logged out!"}
 
 @router.get('/refresh_token')
-async def refresh_token(token: Annotated[str, Depends(oauth2_scheme)]):
+async def refresh_token(token: str = Depends(oauth2_scheme)):
 	try:
 		payload = jwt.decode(token, SECRET_KEY, algorithms=[REFRESH_ALGORITHM])
 		user_id = payload.get('sub')

@@ -17,13 +17,18 @@ import Cookies from 'js-cookie';
 import { Field } from './Components'
 import { ProfilePage, ProfileFill, BioTagFill } from './Profile'
 
-const RefreshToken = () => {
-	const refresh_token = Cookies.get('refresh_token')
-	axios.get('http://localhost:8000/refresh_token?token=' + refresh_token, {})
+const RefreshToken = (FunctionSource) => {
+	const refresh_token = Cookies.get('refresh_token');
+	axios.get('http://localhost:8000/refresh_token', {
+		headers: {
+			Authorization: `Bearer ${refresh_token}`,
+		}
+	})
 	.then(response => {
 		if (response.data.ok) {
 			Cookies.set('access_token', response.data.token);
 			console.log('New access_token generated!')
+			{FunctionSource()}
 		}
 		else
 			console.log('refresh token expired');
@@ -33,18 +38,26 @@ const RefreshToken = () => {
 
 const WhoAmI = () => {
 	const token = Cookies.get('access_token');
-	axios.get('http://localhost:8000/whoami?token=' + token, {})
+	axios.get('http://localhost:8000/whoami', {
+		headers: {
+			Authorization: `Bearer ${token}`,
+		}
+	})
 	.then(response => {
 		console.log(response.data.message);
 		if (response.data.code === 401)
-			{RefreshToken()}
+			{RefreshToken(WhoAmI)}
 	})
 	.catch(error => {console.error('Error:', error);});
 };
 
 const Logout = () => {
 	const token = Cookies.get('access_token');
-	axios.post('http://localhost:8000/logout?token=' + token, {})
+	axios.post('http://localhost:8000/logout', {
+		headers: {
+			Authorization: `Bearer ${token}`,
+		}
+	})
 	.then(response => {
 		if (response.data.ok) {
 			Cookies.remove('access_token');
