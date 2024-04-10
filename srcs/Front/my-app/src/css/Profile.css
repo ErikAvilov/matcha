@@ -1,0 +1,92 @@
+.profile-fill-container {
+	min-height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: linear-gradient(217deg, rgba(243, 239, 239, 0.8), rgba(255,0,0,0) 70.71%),
+            linear-gradient(127deg, rgba(214, 107, 107, 0.8), rgba(0,255,0,0) 70.71%),
+            linear-gradient(336deg, rgba(172, 13, 13, 0.8), rgba(0,0,255,0) 70.71%);
+}
+
+.wrapper {
+	height: 800px;
+	width: 100%;
+	position: relative;
+}
+
+.wrapper form textarea {
+	margin-bottom: 3rem;
+}
+
+.select-container {
+	display: flex;
+	justify-content: space-between;
+}
+
+.select-container select {
+	border-radius: 10px;
+	text-align: center;
+	min-width: 200px;
+	height: 24px;
+	margin-bottom: 100px;
+}
+
+.tags-list {
+	color: black;
+	font-size: 18px;
+	margin: 5px;
+	display: inline-block;
+	border: 1px solid rgb(56, 52, 52);
+	border-radius: 10px;
+	padding: 3px 10px;
+	background-color: rgba(241, 234, 234, 0.253);
+	cursor: pointer;
+	transition: 0.4s ease;
+}
+
+.tags-list:hover {
+	color: white;
+	background-color: black;
+}
+
+.tags-active {
+	color: white;
+	font-size: 18px;
+	margin: 5px;
+	display: inline-block;
+	border: 1px solid rgb(56, 52, 52);
+	border-radius: 10px;
+	padding: 3px 10px;
+	background-color: black;
+	cursor: pointer;
+	transition: 0.4s ease;
+}
+
+.profile-btn {
+	display: flex;
+	justify-content: center;
+	margin: 12px;
+}
+
+.profile-btn button {
+	position: absolute;
+	bottom: 50px;
+	font-size: large;
+	min-height: 50px;
+	width: 200px;
+	border-radius: 8px;
+	background: rgba(241, 238, 238, 0.267);
+	transition: all 0.4s ease;
+	font-style: oblique;
+}
+
+.profile-btn button:hover {
+	background-color: black;
+	color: white;
+	cursor: pointer;
+}
+
+.profile-btn button:active {
+	background-color: white;
+	color: black;
+}

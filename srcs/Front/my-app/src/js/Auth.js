@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Field } from './Components';
+import { Field, Button } from './Components';
 import { useState } from 'react';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
@@ -45,9 +45,7 @@ export const LoginForm = () => {
 				<form onSubmit={handleSumbit}>
 				<Field type='text' inputname='username' placeholder='Username' value={formData.username} onChange={handleChange} style='input-box'/>
 				<Field type='password' inputname='password' placeholder='Password' value={formData.password} onChange={handleChange} style='input-box'/>
-				  <div className='button-container'>
-					<button type="submit">Login</button>
-				  </div>
+				<Button style='button-container' type='submit' text='Login'/>
 				</form>
 				<div className="reg-text">Don't have an account? <Link to="/register">Register</Link></div>
 			  </div>
@@ -99,9 +97,7 @@ export const RegistrationForm = () => {
 				<div className='input-box'>
 					<input type='date' name='birthdate' placeholder='Birthdate' required value={formData.birthdate} onChange={handleChange} />
 				  </div>
-				  <div className='button-container'>
-					<button type="submit">Register</button>
-				  </div>
+				  <Button style='button-container' type='submit' text='Register'/>
 				  <div className="reg-text">Already have an account? <Link to="/login">Login</Link></div>
 				</form>
 			  </div>

@@ -3,27 +3,29 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background: linear-gradient(217deg, rgba(255,0,0,.8), rgba(255,0,0,0) 70.71%),
+	/* background: linear-gradient(217deg, rgba(255,0,0,.8), rgba(255,0,0,0) 70.71%),
             linear-gradient(127deg, rgba(199, 66, 66, 0.8), rgba(0,255,0,0) 70.71%),
-            linear-gradient(336deg, rgba(223, 218, 218, 0.8), rgba(0,0,255,0) 70.71%);
+            linear-gradient(336deg, rgba(223, 218, 218, 0.8), rgba(0,0,255,0) 70.71%); */
+	background-image: url('../tinder-background.webp');
+	background-size: cover;
 }
 
 .wrapper {
 	border: 1px bold black;
 	position: relative;
+	top: 2rem;
 	max-width: 430px;
-	width: 100%;
-	padding: 40px;
-	background: #ffffff;
+	padding: 10px 40px 0;
+	background: rgba(241, 238, 238, 0.267);
 	border-radius: 6px;
-	box-shadow: 0 5px 10px rgba(0,0,0,0.25);
+	box-shadow: 0 8px 10px rgba(0, 0, 0, 0.89);
 }
 
 .wrapper h2 {
 	position: relative;
 	font-size: 28px;
 	font-weight: 600;
-	color: #333;
+	color: #221e1e;
 }
 
 .wrapper h2::before {
@@ -34,18 +36,16 @@
 	height: 3px;
 	width: 32px;
 	border-radius: 12px;
-	background: red;
+	background: rgb(128, 124, 124);
 }
 
 .wrapper form {
 	margin-top: 25px;
-	
 }
 
 .wrapper form .input-box {
 	height: 52px;
 	margin: 18px 0;
-	
 }
 
 form .input-box input {
@@ -63,7 +63,11 @@ form .input-box input {
 
 .input-box input:focus,
 .input-box input:valid {
-	border-color: red;
+	border-color: rgb(0, 0, 0);
+}
+
+.input-box input:hover {
+	cursor: pointer;
 }
 
 .button-container {
@@ -77,7 +81,7 @@ form .input-box input {
 	min-height: 50px;
 	width: 200px;
 	border-radius: 8px;
-	background-color: white;
+	background: rgba(241, 238, 238, 0.267);
 	transition: all 0.4s ease;
 	font-style: oblique;
 }
@@ -85,6 +89,7 @@ form .input-box input {
 .button-container button:hover {
 	background-color: black;
 	color: white;
+	cursor: pointer;
 }
 
 .button-container button:active {

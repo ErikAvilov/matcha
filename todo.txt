@@ -1,1 +1,2 @@
-Upgrade the register input validator
+Adapt pages to small screens
+hash passwords

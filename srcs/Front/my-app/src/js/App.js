@@ -15,13 +15,18 @@ import { Routes, Route, BrowserRouter, Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
 import { Field } from './Components'
+import { ProfilePage, ProfileFill, BioTagFill } from './Profile'
 
 const RefreshToken = () => {
 	const refresh_token = Cookies.get('refresh_token')
 	axios.get('http://localhost:8000/refresh_token?token=' + refresh_token, {})
 	.then(response => {
-		console.log(response.data.token);
-		Cookies.set('access_token', response.data.token);
+		if (response.data.ok) {
+			Cookies.set('access_token', response.data.token);
+			console.log('New access_token generated!')
+		}
+		else
+			console.log('refresh token expired');
 	})
 	.catch(error => {console.error('Error:', error);});
 }
@@ -31,7 +36,7 @@ const WhoAmI = () => {
 	axios.get('http://localhost:8000/whoami?token=' + token, {})
 	.then(response => {
 		console.log(response.data.message);
-		if (response.data.code == 401)
+		if (response.data.code === 401)
 			{RefreshToken()}
 	})
 	.catch(error => {console.error('Error:', error);});
@@ -60,6 +65,8 @@ const NavBar = () => {
 				<li><Link to="/profile" className='nav-btn'>Profile</Link></li>
 				<li><Link to="/register" className='nav-btn'>Register</Link></li>
 				<li><Link to="/login" className='nav-btn'>Login</Link></li>
+				<li><Link to="/fill_profile_1" className='nav-btn'>Fill1</Link></li>
+				<li><Link to="/fill_profile_2" className='nav-btn'>Fill2</Link></li>
 				<li><button onClick={ WhoAmI }>WhoAmI</button></li>
 				<li><button onClick={ Logout }>Logout</button></li>
 			</ul>
@@ -89,63 +96,6 @@ const Home = () => {
 	);
 };
 
-const ProfilePage = () => {
-	return (
-		<div className='profile-page'>
-
-		</div>
-	);
-};
-
-const ProfileSettings = () => {
-	const [formData, setFormData] = useState({
-		gender: '',
-		orientation: '',
-		orientation_other: '',
-	});
-	const handleChange = (e) => {
-		const { name, value } = e.target;
-		setFormData({ ...formData, [name]: value });
-	};
-	
-	const handleSumbit = async (e) => {
-		e.preventDefault();
-
-		axios.post('http://localhost:8000/register', formData)
-			.then(response => {
-				console.log(response.data.message);
-			})
-			.catch(error => {
-				console.error('Error:', error);
-			});
-		}
-	return (
-		<div className='App'>
-			<header className="App-header">
-				<form onSubmit={handleSumbit}>
-					<select name='gender' value={formData.gender} onChange={handleChange}>
-						<option value="" disabled>Select gender</option>
-						<option value="Male">Male</option>
-						<option value="Female">Female</option>
-						<option value="Non-binary">Non-binary</option>
-					</select>
-					<select name="orientation" value={formData.orientation} onChange={handleChange}>
-						<option value="" disabled>Select orientation</option>
-						<option value="Hetero">Heterosexual</option>
-						<option value="Homo">Homosexual</option>
-						<option value="Bi">Bi</option>
-						<option value="Other">Other (Please specify)</option>
-					</select>
-					{formData.orientation === 'Other' && (
-						<input type='text' name='orientation_other' placeholder='Other' value={formData.orientation_other} onChange={handleChange} onClick={(e) => e.stopPropagation()}/>
-					)}
-					<button type="submit">Register</button>
-				</form>
-			</header>
-		</div>
-	);
-}
-
 export class App extends Component {
 	render() {
 		return (
@@ -154,6 +104,8 @@ export class App extends Component {
 				  <Routes>
 					<Route exact path="/" element={<Home />} />
 					<Route path="/profile" element={<ProfilePage />} />
+					<Route path="/fill_profile_1" element={<ProfileFill />} />
+					<Route path="/fill_profile_2" element={<BioTagFill />} />
 					<Route path="/register" element={<RegistrationForm />} />
 					<Route path="/login" element={<LoginForm />} />
 				  </Routes>

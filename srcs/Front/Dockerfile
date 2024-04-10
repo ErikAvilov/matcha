@@ -11,6 +11,7 @@ RUN npm install axios
 RUN npm install uuid
 RUN npm install react-cool-form
 RUN npm install js-cookie
+RUN npm install --save react-tinder-card
 
 RUN npm run build
 

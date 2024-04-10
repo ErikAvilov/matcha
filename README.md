@@ -38,3 +38,5 @@ The main issue with the fastAPI docs, is that it doesn't take in account that ma
 Alright, I had a bit of an oopsie today, I wanted to take a bit of time off and spent a good time at someone's place.
 I couldn't finish it all, I still need to polish some authentication stuff, but refresh/access tokens are ready,
 Users can authentify and all, tomorrow I'm 100% sure I'll finish it.
+April 10, 2024
+Let's do this
