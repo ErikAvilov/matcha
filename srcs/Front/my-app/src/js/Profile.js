@@ -1,6 +1,6 @@
 import { useState } from "react";
 import '../css/Profile.css';
-import { Field, system_tags, Button } from "./Components";
+import { system_tags, Button } from "./Components";
 import Cookies from 'js-cookie';
 import axios from 'axios';
 
@@ -15,7 +15,6 @@ export const ProfilePage = () => {
 };
 
 export const ProfileFill = () => {
-	const [tagsList, setTags] = useState([]);
 	const [formData, setFormData] = useState({
 		gender: '',
 		orientation: '',
@@ -45,8 +44,9 @@ export const ProfileFill = () => {
 	const handleSumbit = (e) => {
 		e.preventDefault();
 		const token = Cookies.get('access_token');
-		axios.post('http://localhost:8000/profile_save_one', {
-			formData,
+		axios.post('http://localhost:8000/profile_save_one',
+		formData,
+		{
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
@@ -89,7 +89,7 @@ export const ProfileFill = () => {
 	                    <img
 	                        key={index}
 	                        src={URL.createObjectURL(image)}
-	                        alt={`Image ${index + 1}`}
+	                        alt={`${index + 1}`}
 	                        style={{ maxWidth: '100%', maxHeight: '150px', margin: '5px' }}
 	                    />
 	                ))}

@@ -12,7 +12,6 @@ router = APIRouter()
 
 @router.post('/profile_save_one')
 async def save_profile_info(request: Request, token: str = Depends(oauth2_scheme)):
-	print('--------------------------------------------------------------')
 	try:
 		payload = jwt.decode(token, SECRET_KEY, algorithms=[ACCESS_ALGORITHM])
 		user_id = payload.get('sub')

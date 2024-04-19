@@ -1,2 +1,3 @@
 Adapt pages to small screens
 hash passwords
+check for duplicated using the username

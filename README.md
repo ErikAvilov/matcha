@@ -51,3 +51,15 @@ Let's do this
 I think my main issue is that prioritize the front-end too much instead of working on the essentials.
 Again, I spent too much thinking on How I would proceed instead of working smarter.
 It's clearly not finished, there was a lot of problems, mainly backend related, if I can fix the 401 error, I SHOULD be able to end this torture tomorrow and work on the frontend freely.
+
+April 19, 2024
+
+Started working again after taking an irresponsable break, had a few interviews to prepare for, pimping my resume and all, guess now I'm ready
+Last time I had a issue with a fastapi endpoint not accepting data, working on that.
+
+Something really annoying happened, I worked it out but I needed to disable the "no throttling" toggle. Apparently its a dev feature that simulates slower connections, no one told me about this during transcendance, this is actually an amazing feature.
+
+Also super important because I just fixed an annoying issue that only hours of doc reading could fix. When sending a get request, you DO NOT necessarily need to send data, you can just send the JWT token and receive whatever that request is made to send.
+HOWEVER, in a POST, you always need to send something, even a "null" statement, otherwise, you'll just get a 401 error and good luck figuring that out lmao.
+
+For today, I'm kinda restarting my working schedule, now I need to sleep correctly, and finally get on with that project.
