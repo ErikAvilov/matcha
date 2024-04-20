@@ -63,3 +63,6 @@ Also super important because I just fixed an annoying issue that only hours of d
 HOWEVER, in a POST, you always need to send something, even a "null" statement, otherwise, you'll just get a 401 error and good luck figuring that out lmao.
 
 For today, I'm kinda restarting my working schedule, now I need to sleep correctly, and finally get on with that project.
+
+April 20, 2024
+

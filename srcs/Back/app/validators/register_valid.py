@@ -18,31 +18,16 @@ def email_validator(email):
 		return False
 
 def username_validator(username):
-	authorized_characters = "aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ0123456789" # pretty basic
-	for char in username:
-		if char not in authorized_characters:
-			return False
-	return True
+	return username.isalnum()
 
 def name_validator(name):
-	authorized_characters = "aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ" # If your dad is elon musk, you get no pussy
-	for char in name:
-		if char not in authorized_characters:
-			return False
-	return True
+	return name.isalpha()
 
 def calculate_age(birthdate): # Returns the exact age, yes it's chatgpt code
 	birthdate = datetime.strptime(birthdate, "%Y-%m-%d")
 	current_date = datetime.now()
 	age = current_date.year - birthdate.year - ((current_date.month, current_date.day) < (birthdate.month, birthdate.day))
 	return age
-
-def correct_gender(gender): # In case someone makes a manual request and 500's the server
-	authorized_gender = ['Male', 'Female', 'Non-binary']
-	for gen in authorized_gender:
-		if gender == gen:
-			return True
-	return False
 
 def validator(data): # Shouldn't be async or else it skips the function in the endpoint
 	if len(data.get('email')) > 100 or len(data.get('username')) > 50 or len(data.get('password')) > 100 \

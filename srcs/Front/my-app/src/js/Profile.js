@@ -52,9 +52,7 @@ export const ProfileFill = () => {
 			},
 		})
 		.then(response => {
-			if (response.data.ok) {
-				console.log(response.data.message);
-			}
+			console.log(response.data.message);
 		})
 		.catch(error => {console.error('Error:', error);});
 	};

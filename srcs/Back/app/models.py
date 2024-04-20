@@ -40,6 +40,17 @@ async def create_user(data) -> str:
 		await conn.fetchval(query, *values)
 		return data.get('first_name')
 
+async def update_profile_first(data, id):
+	query = "UPDATE users SET gender=$1, orientation=$2 where id=$3"
+	if not str(data.get('orientation_other')):
+		real_orientation = str(data.get('orientation'))
+	else:
+		real_orientation = str(data.get('orientation_other'))
+	values = (str(data.get('gender')), real_orientation, id)
+	async with pool.acquire() as conn:
+		await conn.fetchval(query, *values)
+		return
+
 async def log_user(values) -> UUID:
 	query = "SELECT id FROM users WHERE username=$1 AND password =$2"
 	async with pool.acquire() as conn:
